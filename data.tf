@@ -35,7 +35,3 @@ data "aws_iam_policy_document" "s3_bucket_policy" {
     }
   }
 }
-
-data "http" "current_date" {
-  url = "http://worldtimeapi.org/api/ip"
-}

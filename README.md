@@ -11,7 +11,7 @@ provider "aws" {
 ...
 
 module "s3_bucket" {
-  source  = "github.com/EnriqueChavezDEV3CH/terraform-aws-s3-instance?ref=v0.0.2"
+  source  = "github.com/EnriqueChavezDEV3CH/terraform-aws-s3-instance?ref=v0.0.3"
   project_name = "project"
   project_environment = "develop"
 }
