@@ -21,10 +21,31 @@ resource "aws_s3_bucket_acl" "bucket_api_resources" {
 }
 
 
-resource "aws_s3_bucket_policy" "bucket_policy" {
-  bucket = aws_s3_bucket.bucket_api_resources.id
+resource "aws_s3_bucket_versioning" "bucket_api_resources" {
+  count = var.enable_versioning ? 1 : 0
 
-  policy = data.aws_iam_policy_document.s3_bucket_policy.json
+  bucket = aws_s3_bucket.bucket_api_resources.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_api_resources" {
+  count = var.enable_encryption ? 1 : 0
+
+  bucket = aws_s3_bucket.bucket_api_resources.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = var.encryption_algorithm
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "bucket_policy" {
+  count = var.enable_cloudfront ? 1 : 0
+
+  bucket = aws_s3_bucket.bucket_api_resources.id
+  policy = data.aws_iam_policy_document.s3_bucket_policy[0].json
 }
 
 resource "aws_s3_bucket_cors_configuration" "bucket_api_cors" {
